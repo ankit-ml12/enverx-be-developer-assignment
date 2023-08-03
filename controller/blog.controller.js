@@ -1,7 +1,34 @@
 const Blog = require('../model/blog.model')
 const { StatusCodes } = require('http-status-codes')
 
-const getAllblog = async (req, res) => {}
+const getAllblog = async (req, res) => {
+  const { sortBy, query } = req.query
+
+  const queryObject = {}
+
+  if (query) {
+    queryObject.$or = [
+      { name: { $regex: query, $options: 'i' } }, // Case-insensitive name search
+      { description: { $regex: query, $options: 'i' } }, // Case-insensitive description search
+      { category: { $regex: query, $options: 'i' } }, // Case-insensitive category search
+    ]
+  }
+  //search element according to the query
+  let result = Blog.find(queryObject)
+  // sorting blog according to requirement
+  if (sortBy) {
+    const sortList = sortBy.split(',').join(' ')
+    result = result.sort(sortList)
+  } else result = result.sort('createAt')
+
+  // Check if there are any blogs in the database
+  const blogs = await result
+  if (blogs.length === 0) {
+    return res.status(StatusCodes.NOT_FOUND).json({ message: 'No blogs found' })
+  }
+
+  res.status(StatusCodes.OK).json({ count: blogs.length, blogs })
+}
 
 const getOneBlog = async (req, res) => {
   const { id: blogId } = req.params
