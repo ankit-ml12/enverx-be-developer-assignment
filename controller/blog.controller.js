@@ -1,5 +1,6 @@
 const Blog = require('../model/blog.model')
 const { StatusCodes } = require('http-status-codes')
+const { BadRequestError, NotFoundError } = require('../errors')
 
 const getAllblog = async (req, res) => {
   const { sortBy, query } = req.query
@@ -24,7 +25,7 @@ const getAllblog = async (req, res) => {
   // Check if there are any blogs in the database
   const blogs = await result
   if (blogs.length === 0) {
-    return res.status(StatusCodes.NOT_FOUND).json({ message: 'No blogs found' })
+    throw new NotFoundError(`No blogs found`)
   }
 
   res.status(StatusCodes.OK).json({ count: blogs.length, blogs })
@@ -39,7 +40,7 @@ const getOneBlog = async (req, res) => {
 
   if (!blog) {
     //error if blog is not found
-    return res.status(StatusCodes.NOT_FOUND).json({ error: 'Blog not found' })
+    throw new NotFoundError(`No blog with id ${blogId}`)
   }
 
   // Increase the view count by 1
@@ -72,7 +73,13 @@ const updateBlog = async (req, res) => {
   let blog = await Blog.findById(blogId)
 
   if (!blog) {
-    return res.status(StatusCodes.NOT_FOUND).json({ error: 'Blog not found' })
+    throw new NotFoundError(`No blog with id ${blogId}`)
+  }
+
+  if (!category && !name && !description) {
+    throw new BadRequestError(
+      `out of category, name and description all are can't be empty`
+    )
   }
 
   // Update the blog properties if they exist in the request body
@@ -98,7 +105,7 @@ const deleteBlog = async (req, res) => {
   const blog = await Blog.findById(blogId)
 
   if (!blog) {
-    return res.status(StatusCodes.NOT_FOUND).json({ error: 'Blog not found' })
+    throw new NotFoundError(`No blog with id ${blogId}`)
   }
   await Blog.findByIdAndDelete(blogId)
   res
