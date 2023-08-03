@@ -1,4 +1,4 @@
-[![N|Solid](https://iili.io/Hi9giog.png)](https://www.enverx.com/)
+<!-- [![N|Solid](https://iili.io/Hi9giog.png)](https://www.enverx.com/)
 
 EnverX offers a simple and convenient platform to fund early-stage projects
 and trade future carbon credits.
@@ -47,6 +47,6 @@ The estimated time to complete this assignment is 6-7 hours, but it may vary bas
 
 ### To Be Considered
 1. The submitted code should be plagiarism free otherwise your application will be disqualified
-2. Please complete the assignment and submit it to us by the submission deadline assigned to you. 
+2. Please complete the assignment and submit it to us by the submission deadline assigned to you.
 3. follow the instructions carefully, as we will evaluate your code, documentation, and adherence to best practices. Once you have finished, please send us the GitHub repository link.
-4. If you have any questions or need further clarification, please don't hesitate to reach out to us at hr@enverx.com. We look forward to reviewing your work and discussing it with you in the next stage of the interview process.
+4. If you have any questions or need further clarification, please don't hesitate to reach out to us at hr@enverx.com. We look forward to reviewing your work and discussing it with you in the next stage of the interview process. -->
