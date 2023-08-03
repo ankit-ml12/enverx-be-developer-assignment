@@ -2,6 +2,7 @@ const Blog = require('../model/blog.model')
 const { StatusCodes } = require('http-status-codes')
 
 const getAllblog = async (req, res) => {}
+
 const getOneBlog = async (req, res) => {
   const { id: blogId } = req.params
 
@@ -38,8 +39,19 @@ const createBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
   res.send('update blog')
 }
+
 const deleteBlog = async (req, res) => {
-  res.send('delete blog')
+  const { id: blogId } = req.params
+
+  const blog = await Blog.findById(blogId)
+
+  if (!blog) {
+    return res.status(StatusCodes.NOT_FOUND).json({ error: 'Blog not found' })
+  }
+  await Blog.findByIdAndDelete(blogId)
+  res
+    .status(StatusCodes.OK)
+    .json({ message: `Blog with id ${blogId} is successfully removed` })
 }
 
 module.exports = { getAllblog, getOneBlog, createBlog, deleteBlog, updateBlog }
