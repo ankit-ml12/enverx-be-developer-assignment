@@ -17,7 +17,7 @@ const connectDB = require('./db/connect')
 const blogRouter = require('./router/blog.router')
 
 app.use(express.json())
-app.use('/api/v1/blog', blogRouter)
+app.use('/api/v1/posts', blogRouter)
 
 app.use(notFound)
 app.use(erroHandlerMiddleware)

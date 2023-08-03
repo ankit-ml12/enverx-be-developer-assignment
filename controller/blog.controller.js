@@ -3,10 +3,14 @@ const { StatusCodes } = require('http-status-codes')
 const { BadRequestError, NotFoundError } = require('../errors')
 
 const getAllblog = async (req, res) => {
-  const { sortBy, query } = req.query
+  const { sortBy, query, category } = req.query
 
   const queryObject = {}
 
+  if (category) {
+    const categoryList = category.split(',').map((category) => category.trim())
+    queryObject.category = { $in: categoryList }
+  }
   if (query) {
     queryObject.$or = [
       { name: { $regex: query, $options: 'i' } }, // Case-insensitive name search
@@ -25,7 +29,7 @@ const getAllblog = async (req, res) => {
   // Check if there are any blogs in the database
   const blogs = await result
   if (blogs.length === 0) {
-    throw new NotFoundError(`No blogs found`)
+    throw new NotFoundError(`No post found`)
   }
 
   res.status(StatusCodes.OK).json({ count: blogs.length, blogs })
@@ -40,7 +44,7 @@ const getOneBlog = async (req, res) => {
 
   if (!blog) {
     //error if blog is not found
-    throw new NotFoundError(`No blog with id ${blogId}`)
+    throw new NotFoundError(`No post with id ${blogId}`)
   }
 
   // Increase the view count by 1
@@ -58,7 +62,7 @@ const createBlog = async (req, res) => {
 
   const blogId = blog._id.toString()
   //adding url into the blog
-  blog.url = `/blog/${blogId}`
+  blog.url = `/posts/${blogId}`
 
   await blog.save()
   //return the result
@@ -73,7 +77,7 @@ const updateBlog = async (req, res) => {
   let blog = await Blog.findById(blogId)
 
   if (!blog) {
-    throw new NotFoundError(`No blog with id ${blogId}`)
+    throw new NotFoundError(`No post with id ${blogId}`)
   }
 
   if (!category && !name && !description) {
@@ -105,12 +109,12 @@ const deleteBlog = async (req, res) => {
   const blog = await Blog.findById(blogId)
 
   if (!blog) {
-    throw new NotFoundError(`No blog with id ${blogId}`)
+    throw new NotFoundError(`No post with id ${blogId}`)
   }
   await Blog.findByIdAndDelete(blogId)
   res
     .status(StatusCodes.OK)
-    .json({ message: `Blog with id ${blogId} is successfully removed` })
+    .json({ message: `post with id ${blogId} is successfully removed` })
 }
 
 module.exports = { getAllblog, getOneBlog, createBlog, deleteBlog, updateBlog }

@@ -13,7 +13,7 @@ const start = async () => {
     // Populate the JSON blogs with _id and url before inserting
     for (const blog of jsonblogs) {
       const createdblog = await blogModel.create(blog)
-      const url = `/blog/${createdblog._id.toString()}`
+      const url = `/posts/${createdblog._id.toString()}`
       await blogModel.findByIdAndUpdate(createdblog._id, { url }) // Update the blog with the generated URL
     }
 
