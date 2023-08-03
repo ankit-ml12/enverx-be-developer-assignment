@@ -8,14 +8,10 @@ const databseUrl = process.env.MONGO_URI
 
 //required files
 const connectDB = require('./db/connect')
-
-//middleware imports
+const blogRouter = require('./router/blog.router')
 
 app.use(express.json())
-
-app.use('/', (req, res) => {
-  res.send('check the server')
-})
+app.use('/api/v1/blog', blogRouter)
 
 const start = async () => {
   try {
