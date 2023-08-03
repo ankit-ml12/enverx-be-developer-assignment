@@ -31,8 +31,6 @@ GET /api/posts
 - Status Code: `200 OK`
 - Content:
 
-````json
-
 ```json
 {
   "count": 3,
@@ -66,7 +64,7 @@ GET /api/posts
     }
   ]
 }
-````
+```
 
 ## Get One Post
 
