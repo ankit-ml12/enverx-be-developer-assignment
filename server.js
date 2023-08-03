@@ -6,12 +6,19 @@ const app = express()
 const PORT = process.env.PORT || 3000
 const databseUrl = process.env.MONGO_URI
 
+//middleware
+const notFound = require('./middleware/not-found')
+const erroHandlerMiddleware = require('./middleware/error-handler-middleware')
+
 //required files
 const connectDB = require('./db/connect')
 const blogRouter = require('./router/blog.router')
 
 app.use(express.json())
 app.use('/api/v1/blog', blogRouter)
+
+app.use(notFound)
+app.use(erroHandlerMiddleware)
 
 const start = async () => {
   try {
