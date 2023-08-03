@@ -7,7 +7,7 @@ const getOneBlog = async (req, res) => {
   const { id: blogId } = req.params
 
   // Find the blog by its _id
-  //removing url because we allready have url i.e, why apply get method
+  //removing url because we allready have url i.e, why we apply get method
   const blog = await Blog.findById(blogId).select('-url')
 
   if (!blog) {
@@ -36,8 +36,33 @@ const createBlog = async (req, res) => {
   //return the result
   await res.status(StatusCodes.OK).json({ blog })
 }
+
 const updateBlog = async (req, res) => {
-  res.send('update blog')
+  const { id: blogId } = req.params
+  const { category, name, description } = req.body
+
+  // Find the blog by its _id
+  let blog = await Blog.findById(blogId)
+
+  if (!blog) {
+    return res.status(StatusCodes.NOT_FOUND).json({ error: 'Blog not found' })
+  }
+
+  // Update the blog properties if they exist in the request body
+  if (category) {
+    blog.category = category
+  }
+  if (name) {
+    blog.name = name
+  }
+  if (description) {
+    blog.description = description
+  }
+
+  // Save the updated blog to the database
+  blog = await blog.save()
+
+  res.status(StatusCodes.OK).json({ blog })
 }
 
 const deleteBlog = async (req, res) => {
