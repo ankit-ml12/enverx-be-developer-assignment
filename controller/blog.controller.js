@@ -3,8 +3,24 @@ const { StatusCodes } = require('http-status-codes')
 
 const getAllblog = async (req, res) => {}
 const getOneBlog = async (req, res) => {
-  res.send('get one blog')
+  const { id: blogId } = req.params
+
+  // Find the blog by its _id
+  //removing url because we allready have url i.e, why apply get method
+  const blog = await Blog.findById(blogId).select('-url')
+
+  if (!blog) {
+    //error if blog is not found
+    return res.status(StatusCodes.NOT_FOUND).json({ error: 'Blog not found' })
+  }
+
+  // Increase the view count by 1
+  blog.views++
+  await blog.save()
+  //return the blog
+  res.status(StatusCodes.OK).json({ blog })
 }
+
 const createBlog = async (req, res) => {
   const blogData = req.body
 
@@ -13,7 +29,7 @@ const createBlog = async (req, res) => {
 
   const blogId = blog._id.toString()
   //adding url into the blog
-  blog.url = `/blogs/${blogId}`
+  blog.url = `/blog/${blogId}`
 
   await blog.save()
   //return the result
