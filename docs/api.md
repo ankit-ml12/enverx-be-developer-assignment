@@ -1,4 +1,4 @@
-# Blog API Documentation - Blog API Assignment
+# API Documentation - Blog API Assignment
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ Get a list of all posts.
 
 ### URL
 
-```
+```bash
 GET /api/posts
 ```
 
@@ -141,7 +141,7 @@ Update an existing post.
 ### URL
 
 ```bash
-PUT /api/posts/:id
+patch /api/posts/:id
 ```
 
 ### Parameters

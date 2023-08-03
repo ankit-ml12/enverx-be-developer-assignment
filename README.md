@@ -53,7 +53,12 @@ By default, the API will run on `http://localhost:3000`.
 
 Note
 
-- if you want to import raw data use node populate.js
+- if you want to import raw data use
+
+```js
+node populate.js
+```
+
 - above command import the json data into the database to test the api
 
 ## Endpoints
